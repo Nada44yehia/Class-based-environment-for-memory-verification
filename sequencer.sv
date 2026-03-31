@@ -25,16 +25,14 @@ class sequencer;
         // =========================
         // WRITE PHASE
         // =========================
-        // WRITE phase: guarantee each address is written once
-          for (int addr = 0; addr < num; addr++) begin
-          $display("T = %0t [Sequencer] Sending write trans no %0d", $time, addr+1);
-            trans = new();
+        // WRITE phase: guarantee each address is written once using randc for address in transaction class
+		 trans = new();
+		for (int i = 0; i < num; i++) begin
+			$display("T = %0t [Sequencer] Sending write trans no %0d", $time, i+1);          
             if (!trans.randomize() with {
                 write_enable == 1;
                 read_enable  == 0;
-                
-            }) $fatal("Write Randomization failed");
-             trans.Address=addr; 
+             }) $fatal("Write Randomization failed"); 
             trans.print("Sequencer-WR");
 
             // send to driver
@@ -50,15 +48,12 @@ class sequencer;
         // =========================
         $display("T=%0t [Sequencer] Starting READ phase...", $time);
 
-        for (int addr = 0; addr < num; addr++) begin
-          $display("T = %0t [Sequencer] Sending READ trans no %0d", $time, addr+1);
-            trans = new();
+		for (int i = 0; i < num; i++) begin
+			$display("T = %0t [Sequencer] Sending READ trans no %0d", $time, i+1);
             if (!trans.randomize() with {
                 write_enable == 0;
                 read_enable  == 1;
- 
-            }) $fatal("Read Randomization failed");
-            trans.Address=addr; 
+             }) $fatal("Read Randomization failed");
             trans.print("Sequencer-RD");
 
             seq_to_dr.put(trans);
@@ -72,14 +67,13 @@ class sequencer;
         // =========================
         $display("T=%0t [Sequencer] Starting MIXED phase...", $time);
 
-        for (int addr = 0; addr < num; addr++) begin
+		for (int i= 0; i < num; i++) begin
 
             if (!trans.randomize() with {
                 write_enable dist {1 := 10, 0 := 90};
                 read_enable  dist {1 := 50, 0 := 50};
             }) $fatal("Mixed Randomization failed");
 
-            trans.Address=addr;
 
             trans.print("Sequencer-MIX");
 
