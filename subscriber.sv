@@ -4,7 +4,7 @@ class subscriber;
 
     transaction trans;
     mailbox mon_to_sub;
-    virtual memory_intf vif_mem;
+  
 
    
   
@@ -56,9 +56,8 @@ class subscriber;
 endgroup
 
 //constructor
-     function new(virtual memory_intf vif_mem, mailbox mon_to_sub);	
+     function new(mailbox mon_to_sub);	
 		 this.mon_to_sub  = mon_to_sub;
-		 this.vif_mem = vif_mem;
 		 group_1 = new();
       endfunction
 
