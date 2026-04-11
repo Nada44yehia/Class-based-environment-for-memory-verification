@@ -1,5 +1,5 @@
 
-module memory (intf i1);
+module memory (memory_intf i1);
 
   // 2D Array
     reg [31:0] memory_arr [15:0]; 
