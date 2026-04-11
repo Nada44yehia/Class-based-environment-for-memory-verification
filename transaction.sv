@@ -4,7 +4,6 @@ class transaction;
   randc bit [3:0] Address;
   rand bit        write_enable;
   rand bit        read_enable;
-  bit             rst;
   bit [31:0]      Data_out;
   bit             Valid_out;
   
